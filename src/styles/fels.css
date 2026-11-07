@@ -1,0 +1,40 @@
+/* Fels colors: the rust of the logo's dot as the accent, warm greys instead of blue ones. */
+
+:root {
+	--sl-color-accent-low: #3a1d12;
+	--sl-color-accent: #c8643a;
+	--sl-color-accent-high: #f3c9b4;
+	--sl-color-white: #faf6ef;
+	--sl-color-gray-1: #ece4d6;
+	--sl-color-gray-2: #c9bfb0;
+	--sl-color-gray-3: #9c9185;
+	--sl-color-gray-4: #6b625a;
+	--sl-color-gray-5: #45403b;
+	--sl-color-gray-6: #2a2622;
+	--sl-color-black: #1c1916;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #f6dccf;
+	--sl-color-accent: #a9471f;
+	--sl-color-accent-high: #5a230d;
+	--sl-color-white: #1c1916;
+	--sl-color-gray-1: #2a2622;
+	--sl-color-gray-2: #45403b;
+	--sl-color-gray-3: #6b625a;
+	--sl-color-gray-4: #9c9185;
+	--sl-color-gray-5: #c9bfb0;
+	--sl-color-gray-6: #ece4d6;
+	--sl-color-gray-7: #f5f0e7;
+	--sl-color-black: #fbf8f2;
+}
+
+/* the hero on the start page */
+.hero img {
+	border-radius: 22%;
+	box-shadow: 0 10px 40px rgb(0 0 0 / 0.35);
+}
+
+.feature-code {
+	margin-top: 0.5rem;
+}
