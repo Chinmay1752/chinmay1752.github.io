@@ -1,0 +1,137 @@
+---
+title: Fels
+description: A small systems language for people who like to know what their code does.
+template: splash
+hero:
+  tagline: A small systems language for people who like to know what their code does. Native code through LLVM, memory in zones instead of a garbage collector, and code that runs while it compiles.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Get started
+      link: /start/install/
+      icon: right-arrow
+    - text: Read the docs
+      link: /docs/overview/
+      variant: minimal
+    - text: GitHub
+      link: https://github.com/fels-lang/fels
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import waves from '../../assets/waves.png';
+
+## Memory in zones
+
+A zone is an arena with a name and a block. Whatever you allocate in it lives until the block
+ends, and then all of it goes away in one step. You never call `free`, and nothing runs in the
+background to clean up after you.
+
+```fels
+// How many different bytes are in `text`?
+count_distinct :: fn(text: []const u8) -> usize {
+    zone scratch: Arena {
+        seen := scratch.new_slice(bool, 256);
+        for i in 0..256 { seen[i] = false; }
+        n: usize = 0;
+        for b in text {
+            if !seen[b] { seen[b] = true; n += 1; }
+        }
+        return n;
+    }   // `seen` is gone here, all at once
+}
+```
+
+The compiler keeps track of what belongs to a zone, so nothing slips out of its block:
+
+```text
+error: zone-owned value from `scratch` cannot be returned
+  --> escape.fels:4:9
+  │
+4 │         return buf;
+  │         ^^^^^^^^^^^
+```
+
+## Errors are values
+
+A function that can fail says so in its type. `fail` returns an error, `?` passes it on and
+`catch` handles it. There are no exceptions, and nothing unwinds the stack.
+
+```fels
+ParseError :: errors {
+    empty,
+    not_a_digit: u8,
+}
+
+parse :: fn(s: []const u8) -> i32 ! ParseError {
+    if s.len == 0 { fail .empty; }
+    n := 0;
+    for c in s {
+        if c < '0' || c > '9' { fail .not_a_digit(c); }
+        n = n * 10 + (c - '0') as i32;
+    }
+    return n;
+}
+
+main :: fn() -> i32 {
+    a := parse("42") catch err { yield 0; };
+    return a;
+}
+```
+
+## Code that runs while it compiles
+
+`#run` calls a function while your program is being compiled, and the result goes into the
+binary as a constant. Macros and code quotes write code that the compiler checks like code you
+typed yourself.
+
+```fels
+fib :: fn(n: u64) -> u64 {
+    if n < 2 { return n; }
+    return fib(n - 1) + fib(n - 2);
+}
+
+FIB_30 :: #run fib(30);   // worked out while compiling
+```
+
+## Everything in one tool
+
+<CardGrid>
+	<Card title="Build and run" icon="rocket">
+		`fels build`, `fels run hello.fels`, and a build file that is a Fels program too.
+	</Card>
+	<Card title="Tests" icon="approve-check">
+		`fels test` runs every `#test` function. `--filter` picks some of them.
+	</Card>
+	<Card title="Packages" icon="puzzle">
+		`fels add` fetches a package from a Git repository, and a lock file pins its version.
+	</Card>
+	<Card title="Editors" icon="pencil">
+		`fels lsp` gives errors, completion, hover and go to definition. There is a Zed extension
+		and a tree-sitter grammar.
+	</Card>
+	<Card title="C without glue" icon="seti:c">
+		`fels bindgen` turns a C header into Fels. `#extern` calls a DLL, `#export` hands your
+		functions to C.
+	</Card>
+	<Card title="Its own linker" icon="setting">
+		`felsld` is written in Fels, writes Windows executables and DLLs, and links itself.
+	</Card>
+</CardGrid>
+
+## A window in 40 lines
+
+The [imgui package](https://github.com/fels-lang/imgui) brings Dear ImGui and ImPlot. This live
+chart is [about 40 lines of Fels](https://github.com/fels-lang/imgui/blob/main/examples/waves.fels).
+
+<Image src={waves} alt="A window with two moving waves, drawn by a Fels program" />
+
+## Where it stands
+
+Fels is young, and the language still changes. It runs on 64-bit Windows and Linux, builds
+programs for both, and can make UEFI applications and kernels for x86-64 and 64-bit ARM. The
+[known issues](https://github.com/fels-lang/fels/blob/main/KNOWN_ISSUES.md) list what is still
+rough, and the [changelog](https://github.com/fels-lang/fels/blob/main/CHANGELOG.md) what
+changed in each release.
