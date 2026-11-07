@@ -5,12 +5,12 @@
 // sidebar, links between docs rewritten to site links, and links into the compiler's source
 // pointed at GitHub.
 //
-// FELS_DOCS names the docs folder; it defaults to ../gabbro/docs, the local checkout.
+// FELS_DOCS names the docs folder; it defaults to ../fels/docs, a checkout of fels beside this one.
 
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const from = resolve(process.env.FELS_DOCS ?? '../gabbro/docs');
+const from = resolve(process.env.FELS_DOCS ?? '../fels/docs');
 const to = resolve('src/content/docs/docs');
 const repo = 'https://github.com/fels-lang/fels/blob/main';
 
@@ -53,13 +53,13 @@ console.log(`synced ${files.length} docs from ${from}`);
 // ── the standard library reference ────────────────────────────────────────────────────────
 //
 // `fels doc` writes a page per std module from the `///` comments. FELS names the fels to run
-// (default: `fels` on the PATH), FELS_STD the std folder (default: ../gabbro/lib/std). Without a
+// (default: `fels` on the PATH), FELS_STD the std folder (default: ../fels/lib/std). Without a
 // fels that knows `doc`, the reference is left out and the rest of the site still builds.
 
 import { execFileSync } from 'node:child_process';
 
 const fels = process.env.FELS ?? 'fels';
-const stdDir = resolve(process.env.FELS_STD ?? '../gabbro/lib/std');
+const stdDir = resolve(process.env.FELS_STD ?? '../fels/lib/std');
 const apiOut = resolve('.api');
 const apiTo = resolve('src/content/docs/std');
 rmSync(apiOut, { recursive: true, force: true });
