@@ -32,9 +32,11 @@ export default defineConfig({
 				{
 					label: 'Start here',
 					items: [
+						{ label: 'Why Fels', slug: 'start/why' },
 						{ label: 'Install', slug: 'start/install' },
 						{ label: 'Your first program', slug: 'start/first-program' },
 						{ label: 'Overview', slug: 'docs/overview' },
+						{ label: 'Packages and examples', slug: 'start/showcase' },
 					],
 				},
 				{
