@@ -21,14 +21,24 @@ rmSync(to, { recursive: true, force: true });
 mkdirSync(to, { recursive: true });
 
 const files = readdirSync(from).filter((f) => /^\d+_.*\.md$/.test(f)).sort();
+
+// The first heading becomes the page title; a leading "11. " is dropped.
+const headingOf = (text) => text.match(/^# (.+)\n/);
+const titles = new Map(
+	files.map((f) => {
+		const h = headingOf(readFileSync(join(from, f), 'utf8').replace(/\r\n/g, '\n'));
+		return [f, h ? h[1].replace(/^\d+\.\s*/, '') : slugOf(f)];
+	}),
+);
+
 for (const file of files) {
 	let text = readFileSync(join(from, file), 'utf8').replace(/\r\n/g, '\n');
-
-	// The first heading becomes the page title; a leading "11. " is dropped.
-	const heading = text.match(/^# (.+)\n/);
-	const title = heading ? heading[1].replace(/^\d+\.\s*/, '') : slugOf(file);
+	const heading = headingOf(text);
+	const title = titles.get(file);
 	if (heading) text = text.slice(heading[0].length).replace(/^\n+/, '');
 
+	// [13_metaprogramming.md](...) shows the page's title instead of its file name
+	text = text.replace(/\[`?(?:docs\/)?(\d+_[a-z0-9_]+\.md)`?\]\(/g, (all, f) => (titles.has(f) ? `[${titles.get(f).replace(/`/g, '')}](` : all));
 	// 05_memory_zones.md#x → /docs/memory-zones/#x
 	text = text.replace(/\]\((\d+_[a-z0-9_]+\.md)(#[^)]*)?\)/g, (_, f, anchor) => `](/docs/${slugOf(f)}/${anchor ?? ''})`);
 	// ../src/sema.zig → the file on GitHub
