@@ -17,7 +17,7 @@ This is the `src/main.fels` it writes for you:
 ```fels
 #import std.io;
 
-// The sum of the numbers from 1 to `n`.
+/// The sum of the numbers from 1 to `n`.
 sum_to :: fn(n: i32) -> i32 {
     total := 0;
     i := 1;
@@ -48,6 +48,8 @@ A few things to notice:
 - `name := value` declares a variable, and its type comes from the value.
 - Text in braces inside a string is printed in its place: `{sum_to(10)}`.
 - A `#test` function takes a `*Test` and checks things with it. `fels test` runs them all.
+- A `///` comment documents the declaration below it. Your editor shows it on hover, and
+  `fels doc` makes a reference from them.
 
 For a single file without a project, `fels run hello.fels` builds and runs it in one step.
 

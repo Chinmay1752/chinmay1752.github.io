@@ -60,6 +60,11 @@ export default defineConfig({
 					items: ['docs/stdlib', 'docs/c-interop'],
 				},
 				{
+					label: 'Std reference',
+					collapsed: true,
+					items: [{ autogenerate: { directory: 'std' } }],
+				},
+				{
 					label: 'Tools',
 					items: ['docs/build-system', 'docs/tooling', 'docs/packages', 'docs/testing'],
 				},

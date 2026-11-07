@@ -30,7 +30,7 @@ ends, and then all of it goes away in one step. You never call `free`, and nothi
 background to clean up after you.
 
 ```fels
-// How many different bytes are in `text`?
+/// How many different bytes are in `text`?
 count_distinct :: fn(text: []const u8) -> usize {
     zone scratch: Arena {
         seen := scratch.new_slice(bool, 256);
