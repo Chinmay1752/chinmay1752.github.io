@@ -43,4 +43,6 @@ zig build test -Dllvm-path=path/to/llvm
 
 The compiler lands in `zig-out/bin`.
 
+Stuck? Ask in #help on the [Fels Discord](https://discord.gg/QBV3XgGhDn).
+
 Next: [your first program](/start/first-program/).
