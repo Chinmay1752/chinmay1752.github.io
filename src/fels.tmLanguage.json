@@ -1,0 +1,110 @@
+{
+  "name": "fels",
+  "scopeName": "source.fels",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#directives" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#declarations" },
+    { "include": "#types" },
+    { "include": "#calls" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.documentation.fels", "match": "///.*$" },
+        { "name": "comment.line.double-slash.fels", "match": "//.*$" },
+        { "name": "comment.block.fels", "begin": "/\\*", "end": "\\*/" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.triple.fels", "begin": "\"\"\"", "end": "\"\"\"" },
+        { "name": "string.quoted.raw.fels", "begin": "r\"", "end": "\"" },
+        {
+          "name": "string.quoted.double.fels",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.fels", "match": "\\\\(x[0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|.)" },
+            { "name": "constant.character.escape.fels", "match": "\\{\\{|\\}\\}" },
+            {
+              "name": "meta.interpolation.fels",
+              "begin": "\\{",
+              "end": "\\}",
+              "beginCaptures": { "0": { "name": "punctuation.section.interpolation.begin.fels" } },
+              "endCaptures": { "0": { "name": "punctuation.section.interpolation.end.fels" } },
+              "patterns": [{ "include": "$self" }]
+            }
+          ]
+        },
+        { "name": "string.quoted.single.fels", "match": "'(\\\\.|[^'\\\\])'" }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        { "name": "keyword.other.directive.fels", "match": "#[a-z_][a-z0-9_]*" },
+        { "name": "support.function.builtin.fels", "match": "@[a-z_][A-Za-z0-9_]*" }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.hex.fels", "match": "\\b0x[0-9A-Fa-f_]+\\b" },
+        { "name": "constant.numeric.binary.fels", "match": "\\b0b[01_]+\\b" },
+        { "name": "constant.numeric.float.fels", "match": "\\b[0-9][0-9_]*\\.[0-9][0-9_]*([eE][+-]?[0-9]+)?\\b" },
+        { "name": "constant.numeric.integer.fels", "match": "\\b[0-9][0-9_]*\\b" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.fels", "match": "\\b(if|else|while|for|in|match|break|continue|return|yield)\\b" },
+        { "name": "keyword.control.exception.fels", "match": "\\b(catch|fail|defer|zone|unsafe)\\b" },
+        { "name": "storage.type.fels", "match": "\\b(fn|struct|union|enum|errors|interface|macro|constraint|distinct|opaque|type|extern)\\b" },
+        { "name": "storage.modifier.fels", "match": "\\b(pub|const|volatile|atomic|borrow|where)\\b" },
+        { "name": "keyword.operator.word.fels", "match": "\\bas\\b" },
+        { "name": "constant.language.fels", "match": "\\b(true|false|null|undefined)\\b" },
+        { "name": "variable.language.self.fels", "match": "\\b(self|Self)\\b" }
+      ]
+    },
+    "declarations": {
+      "patterns": [
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(::)\\s*(fn|macro)\\b",
+          "captures": {
+            "1": { "name": "entity.name.function.fels" },
+            "2": { "name": "keyword.operator.declaration.fels" },
+            "3": { "name": "storage.type.fels" }
+          }
+        },
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(::)\\s*(struct|union|enum|errors|interface|constraint|distinct|opaque)\\b",
+          "captures": {
+            "1": { "name": "entity.name.type.fels" },
+            "2": { "name": "keyword.operator.declaration.fels" },
+            "3": { "name": "storage.type.fels" }
+          }
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        { "name": "support.type.primitive.fels", "match": "\\b(i8|i16|i32|i64|i128|u8|u16|u32|u64|u128|isize|usize|f32|f64|bool|byte|rune|str|void|addr|any|noreturn)\\b" },
+        { "name": "entity.name.type.fels", "match": "\\b[A-Z][A-Za-z0-9_]*\\b" }
+      ]
+    },
+    "calls": {
+      "patterns": [
+        { "name": "entity.name.function.call.fels", "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()" }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.declaration.fels", "match": "::|:=" },
+        { "name": "keyword.operator.fels", "match": "->|=>|\\.\\.=?|\\?\\?|!!|[-+*/%]%?=?|==|!=|<=|>=|&&|\\|\\||<<=?|>>=?|[=<>!~&|^?]" }
+      ]
+    }
+  }
+}
