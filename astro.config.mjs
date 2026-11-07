@@ -11,7 +11,10 @@ export default defineConfig({
 			description: 'A small systems language for people who like to know what their code does.',
 			logo: { src: './src/assets/logo.svg', alt: 'Fels' },
 			favicon: '/favicon.svg',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/fels-lang/fels' }],
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/fels-lang/fels' },
+				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/QBV3XgGhDn' },
+			],
 			customCss: ['./src/styles/fels.css'],
 			editLink: { baseUrl: 'https://github.com/fels-lang/fels-lang.github.io/edit/main/' },
 			lastUpdated: false,
